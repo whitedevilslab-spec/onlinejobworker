@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Job Worker - Service Marketplace</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <h1>Online Job Worker</h1>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#" onclick="openModal('loginModal')">Login</a></li>
+          <li><a href="#" onclick="openModal('registerModal')">Register</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+      <!-- Hero Section -->
+      <section class="hero" style="text-align: center; padding: 3rem 0;">
+        <h2>Find Trusted Service Professionals</h2>
+        <p style="font-size: 1.2rem; color: #666; margin: 1rem 0;">
+          Connect with experienced workers for all your service needs
+        </p>
+        <button class="btn" onclick="openModal('searchModal')" style="font-size: 1.1rem; padding: 1rem 2rem;">
+          Find Services
+        </button>
+      </section>
+
+      <!-- Services Section -->
+      <section id="services" style="margin: 3rem 0;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Our Services</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>🧹 Cleaning</h3>
+            <p>Professional cleaning services for homes and offices</p>
+          </div>
+          <div class="card">
+            <h3>🔧 Plumbing</h3>
+            <p>Expert plumbing repairs and installations</p>
+          </div>
+          <div class="card">
+            <h3>⚡ Electrical</h3>
+            <p>Licensed electricians for all electrical work</p>
+          </div>
+          <div class="card">
+            <h3>🪵 Carpentry</h3>
+            <p>Quality carpentry and woodwork services</p>
+          </div>
+          <div class="card">
+            <h3>🎨 Painting</h3>
+            <p>Professional interior and exterior painting</p>
+          </div>
+          <div class="card">
+            <h3>🌱 Gardening</h3>
+            <p>Landscaping and garden maintenance services</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Workers Section -->
+      <section style="margin: 3rem 0;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Featured Professionals</h2>
+        <div id="workers-container" class="grid"></div>
+      </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Login</h2>
+        <form
+          onsubmit="event.preventDefault(); handleLogin(
+            document.getElementById('login-email').value,
+            document.getElementById('login-password').value
+          )"
+        >
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('registerModal')">&times;</span>
+        <h2>Register</h2>
+        <form
+          onsubmit="event.preventDefault(); handleRegister(
+            document.getElementById('register-name').value,
+            document.getElementById('register-email').value,
+            document.getElementById('register-password').value,
+            document.getElementById('register-phone').value
+          )"
+        >
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="register-name" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="register-email" required />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="register-phone" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="register-password" required />
+          </div>
+          <button type="submit" class="btn">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('searchModal')">&times;</span>
+        <h2>Search Services</h2>
+        <form
+          onsubmit="event.preventDefault(); loadWorkers({
+            serviceType: document.getElementById('search-service').value
+          })"
+        >
+          <div class="form-group">
+            <label>Service Type</label>
+            <select id="search-service" required>
+              <option value="">Select a service</option>
+              <option value="cleaning">Cleaning</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="electrical">Electrical</option>
+              <option value="carpentry">Carpentry</option>
+              <option value="painting">Painting</option>
+              <option value="gardening">Gardening</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Search</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: #333; color: white; text-align: center; padding: 2rem; margin-top: 3rem;">
+      <p>&copy; 2026 Online Job Worker. All rights reserved.</p>
+      <p>IGNOU Web Application Development Project</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>
