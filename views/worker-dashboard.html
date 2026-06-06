@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard - Online Job Worker</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <h1>Online Job Worker - Worker Dashboard</h1>
+            <ul>
+                <li><a href="#" onclick="workerNavigateTo('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="workerNavigateTo('bookings')">My Bookings</a></li>
+                <li><a href="#" onclick="workerNavigateTo('earnings')">Earnings</a></li>
+                <li><a href="#" onclick="workerNavigateTo('profile')">Profile</a></li>
+                <li><a href="#" onclick="workerNavigateTo('reviews')">Reviews</a></li>
+                <li><a href="#" onclick="workerLogout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="user-profile-card">
+                <img id="worker-profile-img" src="/images/default-avatar.png" alt="Profile">
+                <h3 id="worker-name">Loading...</h3>
+                <p id="worker-service">Service Type</p>
+                <p id="worker-rating">⭐ 0.0</p>
+                <button class="btn" onclick="workerNavigateTo('profile')">Edit Profile</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" onclick="workerNavigateTo('dashboard')" class="nav-item active">📊 Dashboard</a>
+                <a href="#" onclick="workerNavigateTo('bookings')" class="nav-item">📅 My Bookings</a>
+                <a href="#" onclick="workerNavigateTo('earnings')" class="nav-item">💰 Earnings</a>
+                <a href="#" onclick="workerNavigateTo('profile')" class="nav-item">👤 Profile</a>
+                <a href="#" onclick="workerNavigateTo('reviews')" class="nav-item">⭐ Reviews</a>
+                <a href="#" onclick="workerLogout()" class="nav-item logout">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <section class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section active">
+                <h2>Welcome Back!</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Today's Bookings</h3>
+                        <p class="stat-number" id="today-bookings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Earnings</h3>
+                        <p class="stat-number" id="total-earnings">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>This Month</h3>
+                        <p class="stat-number" id="monthly-earnings">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completion Rate</h3>
+                        <p class="stat-number" id="completion-rate">0%</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Upcoming Bookings</h3>
+                <div id="upcoming-bookings" class="bookings-list"></div>
+            </div>
+
+            <!-- Bookings Section -->
+            <div id="bookings-section" class="section">
+                <h2>My Bookings</h2>
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterWorkerBookings('all')">All</button>
+                    <button class="tab-btn" onclick="filterWorkerBookings('pending')">Pending</button>
+                    <button class="tab-btn" onclick="filterWorkerBookings('confirmed')">Confirmed</button>
+                    <button class="tab-btn" onclick="filterWorkerBookings('in-progress')">In Progress</button>
+                    <button class="tab-btn" onclick="filterWorkerBookings('completed')">Completed</button>
+                </div>
+                <div id="worker-bookings-list" class="bookings-list"></div>
+            </div>
+
+            <!-- Earnings Section -->
+            <div id="earnings-section" class="section">
+                <h2>Earnings & Payouts</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Account Balance</h3>
+                        <p class="stat-number" id="account-balance">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Earned</h3>
+                        <p class="stat-number" id="lifetime-earnings">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Payout</h3>
+                        <p class="stat-number" id="pending-payout">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completed Bookings</h3>
+                        <p class="stat-number" id="completed-jobs">0</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Earnings History</h3>
+                <div id="earnings-list" class="bookings-list"></div>
+
+                <div style="margin-top: 2rem;">
+                    <button class="btn" onclick="requestPayout()">Request Payout</button>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="section">
+                <h2>Worker Profile Settings</h2>
+                <form id="worker-profile-form" onsubmit="updateWorkerProfile(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="worker-profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="worker-profile-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Type</label>
+                        <select id="worker-profile-service" required>
+                            <option value="cleaning">🧹 Cleaning</option>
+                            <option value="plumbing">🔧 Plumbing</option>
+                            <option value="electrical">⚡ Electrical</option>
+                            <option value="carpentry">🛠️ Carpentry</option>
+                            <option value="painting">🎨 Painting</option>
+                            <option value="gardening">🌿 Gardening</option>
+                            <option value="cooking">👨‍🍳 Cooking</option>
+                            <option value="tutoring">📚 Tutoring</option>
+                            <option value="beauty">💄 Beauty</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Experience (years)</label>
+                        <input type="number" id="worker-profile-experience" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hourly Rate ($)</label>
+                        <input type="number" id="worker-profile-rate" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>About Me</label>
+                        <textarea id="worker-profile-about" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Skills (comma-separated)</label>
+                        <input type="text" id="worker-profile-skills">
+                    </div>
+                    <button type="submit" class="btn">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Reviews Section -->
+            <div id="reviews-section" class="section">
+                <h2>Customer Reviews</h2>
+                <div id="worker-reviews-list" class="reviews-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Details Modal -->
+    <div id="bookingDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookingDetailsModal()">&times;</span>
+            <h2>Booking Details</h2>
+            <div id="booking-details-content"></div>
+            <div style="margin-top: 1.5rem;" id="booking-action-buttons"></div>
+        </div>
+    </div>
+
+    <!-- Request Payout Modal -->
+    <div id="payoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePayoutModal()">&times;</span>
+            <h2>Request Payout</h2>
+            <form onsubmit="submitPayoutRequest(event)">
+                <div class="form-group">
+                    <label>Amount to Payout</label>
+                    <input type="number" id="payout-amount" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Bank Account</label>
+                    <input type="text" id="payout-account" required>
+                </div>
+                <div class="form-group">
+                    <label>Routing Number</label>
+                    <input type="text" id="payout-routing" required>
+                </div>
+                <button type="submit" class="btn">Request Payout</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/worker-dashboard.js"></script>
+</body>
+</html>
